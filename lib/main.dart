@@ -26,6 +26,13 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
+  final realController = TextEditingController();
+  final usdController = TextEditingController();
+  final eurController = TextEditingController();
+  final gbpController = TextEditingController();
+  final arsController = TextEditingController();
+  final btcController = TextEditingController();
+
   double usd, eur,gbp,ars,btc;
 
   @override
@@ -68,6 +75,25 @@ class _HomeState extends State<Home> {
                   ars = snapshot.data["results"]["currencies"]["ARS"]["buy"];
                   btc = snapshot.data["results"]["currencies"]["BTC"]["buy"];
 
+                  void _realTrocar(String text){
+                    print(text);
+                  }
+                  void _usdTrocar(String text){
+                    print(text);
+                  }
+                  void _eurTrocar(String text){
+                    print(text);
+                  }
+                  void _gbpTrocar(String text){
+                    print(text);
+                  }
+                  void _arsTrocar(String text){
+                    print(text);
+                  }
+                  void _btcTrocar(String text){
+                    print(text);
+                  }
+
                   return SingleChildScrollView(
                     padding: EdgeInsets.all(10.0),
                     child: Column(
@@ -75,84 +101,17 @@ class _HomeState extends State<Home> {
                       children: <Widget>[
                         Icon(Icons.monetization_on,size: 150.0, color: Colors.white),
 
-                        TextField(
-                          decoration: InputDecoration(
-                            labelText: "Reais",
-                            labelStyle: TextStyle(color: Colors.white),
-                            border: OutlineInputBorder(),
-                            prefixText: "R\$"
-                          ),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
-
-                          ),
-                        ),
+                        buildTextFields("Reais", "R\$" ,realController, _realTrocar),
                         Divider(),
-                        TextField(
-                          decoration: InputDecoration(
-                              labelText: "USD Dólar",
-                              labelStyle: TextStyle(color: Colors.white),
-                              border: OutlineInputBorder(),
-                              prefixText: "US\$"
-                          ),
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16.0
-                          ),
-                        ),
+                        buildTextFields("USD Dólar", "US\$",usdController,_usdTrocar),
                         Divider(),
-                        TextField(
-                          decoration: InputDecoration(
-                              labelText: "EUR Euros",
-                              labelStyle: TextStyle(color: Colors.white),
-                              border: OutlineInputBorder(),
-                              prefixText: "€"
-                          ),
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16.0
-                          ),
-                        ),
+                        buildTextFields("EUR Euros", "€",eurController,_eurTrocar),
                         Divider(),
-                        TextField(
-                          decoration: InputDecoration(
-                              labelText: "GBP Libra",
-                              labelStyle: TextStyle(color: Colors.white),
-                              border: OutlineInputBorder(),
-                              prefixText: "R\$"
-                          ),
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16.0
-                          ),
-                        ),
+                        buildTextFields("GBP Libra", "R\$",gbpController,_gbpTrocar),
                         Divider(),
-                        TextField(
-                          decoration: InputDecoration(
-                              labelText: "ARS Peso",
-                              labelStyle: TextStyle(color: Colors.white),
-                              border: OutlineInputBorder(),
-                              prefixText: "R\$"
-                          ),
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16.0
-                          ),
-                        ),
+                        buildTextFields("ARS Peso", "R\$",arsController,_arsTrocar),
                         Divider(),
-                        TextField(
-                          decoration: InputDecoration(
-                              labelText: "BTC Coinbase",
-                              labelStyle: TextStyle(color: Colors.white),
-                              border: OutlineInputBorder(),
-                              prefixText: "R\$"
-                          ),
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16.0
-                          ),
-                        ),
+                        buildTextFields("BTC Coinbase", "R\$",btcController,_btcTrocar),
                         Divider(),
                       ],
                     ),
@@ -163,4 +122,22 @@ class _HomeState extends State<Home> {
           }),
     );
   }
+}
+Widget buildTextFields(String label , String prefix, TextEditingController controller , Function func){ //TextField para não precisar repetir código, se está repetindo está errado.
+
+  return TextField(
+    controller: controller,
+    decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(color: Colors.white),
+        border: OutlineInputBorder(),
+        prefixText: prefix
+    ),
+    style: TextStyle(
+        color: Colors.white,
+        fontSize: 16.0
+    ),
+    onChanged: func,
+    keyboardType: TextInputType.number,
+  );
 }
