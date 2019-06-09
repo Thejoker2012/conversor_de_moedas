@@ -34,6 +34,35 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.green, //Cor da barra superior
         centerTitle: true,//Alinhamento do titulo
       ),
+      body: FutureBuilder<Map>( // Widget FutureBuilder que contém um mapa pois a API vai retorar um mapa
+          future: getData(), //Vai pegar os valores futuros vindos do getData e passar para o FutureBuilder
+          builder: (context, snapshot){//snapshot é uma fotografia momentania dos dados obtidos do getData
+            switch(snapshot.connectionState){//switch para ver o estado dos snapshots
+              case ConnectionState.none://caso não estiver conectando em nada
+              case ConnectionState.waiting://caso esteja esperando os dados ou uma conexão
+                return Center(//Se estiver esperando os dados ele irá mostrear que está carregando dados
+                  child: Text("Carregando Dados...",
+                  style: TextStyle(color: Colors.green,
+                  fontSize: 25.0),
+                  textAlign: TextAlign.center,
+                  ),
+                );
+              default:
+                if(snapshot.hasError){//Se encontrar algum erro ele retornara Erro ao carregar dados
+                  return Center(
+                    child: Text("Erro ao Carregar Dados!!!",
+                      style: TextStyle(color: Colors.green,
+                          fontSize: 25.0),
+                      textAlign: TextAlign.center,
+                    ),
+                  );
+                }
+                else{// Se tudo der certo ele retornará uma página amarela
+                  return Container(color: Colors.amber,);
+                }
+
+            }
+          }),
     );
   }
 }
