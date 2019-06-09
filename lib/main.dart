@@ -25,10 +25,13 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  double usd, eur,gbp,ars,btc;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold( //Widget que permite usar a barra superior na Tela
-      backgroundColor: Colors.blue,//Cor de fundo da tela
+      backgroundColor: Colors.blueGrey,//Cor de fundo da tela
       appBar: AppBar( //widget barra superior
         title: Text("Conversor de Moedas"),//Titulo da barra superior
         backgroundColor: Colors.green, //Cor da barra superior
@@ -58,7 +61,102 @@ class _HomeState extends State<Home> {
                   );
                 }
                 else{// Se tudo der certo ele retornará uma página amarela
-                  return Container(color: Colors.amber,);
+
+                  usd = snapshot.data["results"]["currencies"]["USD"]["buy"];
+                  eur = snapshot.data["results"]["currencies"]["EUR"]["buy"];
+                  gbp = snapshot.data["results"]["currencies"]["GBP"]["buy"];
+                  ars = snapshot.data["results"]["currencies"]["ARS"]["buy"];
+                  btc = snapshot.data["results"]["currencies"]["BTC"]["buy"];
+
+                  return SingleChildScrollView(
+                    padding: EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        Icon(Icons.monetization_on,size: 150.0, color: Colors.white),
+
+                        TextField(
+                          decoration: InputDecoration(
+                            labelText: "Reais",
+                            labelStyle: TextStyle(color: Colors.white),
+                            border: OutlineInputBorder(),
+                            prefixText: "R\$"
+                          ),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.0,
+
+                          ),
+                        ),
+                        Divider(),
+                        TextField(
+                          decoration: InputDecoration(
+                              labelText: "USD Dólar",
+                              labelStyle: TextStyle(color: Colors.white),
+                              border: OutlineInputBorder(),
+                              prefixText: "US\$"
+                          ),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0
+                          ),
+                        ),
+                        Divider(),
+                        TextField(
+                          decoration: InputDecoration(
+                              labelText: "EUR Euros",
+                              labelStyle: TextStyle(color: Colors.white),
+                              border: OutlineInputBorder(),
+                              prefixText: "€"
+                          ),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0
+                          ),
+                        ),
+                        Divider(),
+                        TextField(
+                          decoration: InputDecoration(
+                              labelText: "GBP Libra",
+                              labelStyle: TextStyle(color: Colors.white),
+                              border: OutlineInputBorder(),
+                              prefixText: "R\$"
+                          ),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0
+                          ),
+                        ),
+                        Divider(),
+                        TextField(
+                          decoration: InputDecoration(
+                              labelText: "ARS Peso",
+                              labelStyle: TextStyle(color: Colors.white),
+                              border: OutlineInputBorder(),
+                              prefixText: "R\$"
+                          ),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0
+                          ),
+                        ),
+                        Divider(),
+                        TextField(
+                          decoration: InputDecoration(
+                              labelText: "BTC Coinbase",
+                              labelStyle: TextStyle(color: Colors.white),
+                              border: OutlineInputBorder(),
+                              prefixText: "R\$"
+                          ),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0
+                          ),
+                        ),
+                        Divider(),
+                      ],
+                    ),
+                  );
                 }
 
             }
