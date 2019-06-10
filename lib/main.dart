@@ -16,6 +16,7 @@ void main() async{ //Funcão principal
 //Esperando os dados que virão do futuro para criar um mapa json
 Future<Map> getData() async{
   http.Response response = await http.get(request); //Fazendo uma requisição e esperando os dados chegarem
+  print(json.decode(response.body));
   return json.decode(response.body);//Converter os dados que chegaram pelo response para json
 }
 
@@ -31,9 +32,18 @@ class _HomeState extends State<Home> {
   final eurController = TextEditingController();
   final gbpController = TextEditingController();
   final arsController = TextEditingController();
-  final btcController = TextEditingController();
 
-  double usd, eur,gbp,ars,btc;
+  double usd, eur ,gbp ,ars ,btc;
+
+  int _info = 2;
+
+  void _clearAll(){
+    realController.text = "";
+    usdController.text = "";
+    eurController.text = "";
+    gbpController.text = "";
+    arsController.text = "";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,25 +83,62 @@ class _HomeState extends State<Home> {
                   eur = snapshot.data["results"]["currencies"]["EUR"]["buy"];
                   gbp = snapshot.data["results"]["currencies"]["GBP"]["buy"];
                   ars = snapshot.data["results"]["currencies"]["ARS"]["buy"];
-                  btc = snapshot.data["results"]["currencies"]["BTC"]["buy"];
 
                   void _realTrocar(String text){
-                    print(text);
+                    if(text.isEmpty){
+                      _clearAll();
+                    }
+                    double real = double.parse(text);
+                    if(text.isEmpty){
+                      _clearAll();
+                    }
+                    usdController.text = (real/usd).toStringAsFixed(_info);
+                    eurController.text = (real/eur).toStringAsFixed(_info);
+                    gbpController.text = (real/gbp).toStringAsFixed(_info);
+                    arsController.text = (real/ars).toStringAsFixed(_info);
                   }
                   void _usdTrocar(String text){
+                    if(text.isEmpty){
+                      _clearAll();
+                    }
+                    double dolar = double.parse(text);
+                    realController.text = (dolar * this.usd).toStringAsPrecision(_info);
+                    eurController.text = (dolar * this.usd/eur).toStringAsPrecision(_info);
+                    gbpController.text = (dolar * this.usd/gbp).toStringAsPrecision(_info);
+                    arsController.text = (dolar * this.usd/ars).toStringAsPrecision(_info);
                     print(text);
                   }
                   void _eurTrocar(String text){
+                    if(text.isEmpty){
+                      _clearAll();
+                    }
+                    double eur = double.parse(text);
+                    realController.text = (eur * this.eur).toStringAsPrecision(_info);
+                    usdController.text = (eur * this.eur/usd).toStringAsPrecision(_info);
+                    gbpController.text = (eur * this.eur/gbp).toStringAsPrecision(_info);
+                    arsController.text = (eur * this.eur/ars).toStringAsPrecision(_info);
                     print(text);
                   }
                   void _gbpTrocar(String text){
+                    if(text.isEmpty){
+                      _clearAll();
+                    }
+                    double gbp = double.parse(text);
+                    realController.text = (gbp * this.gbp).toStringAsPrecision(_info);
+                    usdController.text = (gbp/this.gbp/usd).toStringAsFixed(_info);
+                    eurController.text = (gbp/this.gbp/eur).toStringAsFixed(_info);
+                    arsController.text = (gbp/this.gbp/ars).toStringAsFixed(_info);
                     print(text);
                   }
                   void _arsTrocar(String text){
-                    print(text);
-                  }
-                  void _btcTrocar(String text){
-                    print(text);
+                    if(text.isEmpty){
+                      _clearAll();
+                    }
+                    double ars = double.parse(text);
+                    realController.text = (gbp * this.gbp).toStringAsPrecision(_info);
+                    usdController.text = (ars/this.ars/usd).toStringAsFixed(_info);
+                    eurController.text = (ars/this.ars/eur).toStringAsFixed(_info);
+                    gbpController.text = (ars/this.ars/gbp).toStringAsFixed(_info);
                   }
 
                   return SingleChildScrollView(
@@ -110,8 +157,6 @@ class _HomeState extends State<Home> {
                         buildTextFields("GBP Libra", "R\$",gbpController,_gbpTrocar),
                         Divider(),
                         buildTextFields("ARS Peso", "R\$",arsController,_arsTrocar),
-                        Divider(),
-                        buildTextFields("BTC Coinbase", "R\$",btcController,_btcTrocar),
                         Divider(),
                       ],
                     ),
@@ -138,6 +183,6 @@ Widget buildTextFields(String label , String prefix, TextEditingController contr
         fontSize: 16.0
     ),
     onChanged: func,
-    keyboardType: TextInputType.number,
+    keyboardType: TextInputType.numberWithOptions(decimal: true),
   );
 }
